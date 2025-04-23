@@ -10,7 +10,7 @@ This project allows you to visualize and filter **drone no-fly zones** based on 
 - Real-time filtering by category
 - **Dynamic GeoJSON generation** based on map bounds
 - Download filtered zones as GeoJSON
-- Compatible with tools like [FlightPlanEditor.de](https://www.flightplaneditor.de)
+- Compatible with tools like [FlightPlanEditor.de](https://www.flightplaneditor.de) from [Aerial Germany](https://wwww.aerial-germany.de)
 
 ---
 
@@ -19,7 +19,7 @@ This project allows you to visualize and filter **drone no-fly zones** based on 
 ### 1. Clone the repository
 
 ```bash
-git clone https://github.com/your-username/osm-noflyzones.git
+git clone https://github.com/aerialgermany/osm-noflyzones.git
 cd osm-noflyzones
 ```
 
@@ -59,7 +59,7 @@ You should see the interactive map interface with filter options.
 
 ## 📤 Export & Integration
 
-You can export the currently visible no-fly zones as a **filtered GeoJSON file** and upload it into [FlightPlanEditor.de](https://www.flightplaneditor.de) to use it in drone flight planning scenarios.
+You can export the currently visible no-fly zones as a **filtered GeoJSON file** and upload it into [FlightPlanEditor.de](https://www.flightplaneditor.de) from [Aerial Germany](https://wwww.aerial-germany.de) to use it in drone flight planning scenarios.
 
 ---
 
@@ -75,3 +75,15 @@ Built with ❤️ using:
 - [OpenStreetMap](https://www.openstreetmap.org)
 - [Leaflet.js](https://leafletjs.com/)
 - [FastAPI](https://fastapi.tiangolo.com)
+
+
+---
+
+## ⚠️ Disclaimer
+
+The data visualized and exported through this tool is based on OpenStreetMap and publicly available sources.  
+**It does not constitute legally binding or official no-fly zone information.**  
+No liability is assumed for the accuracy, completeness, or legal applicability of the displayed data.
+
+📌 **Always consult your local aviation authority or competent government agencies** for current and legally binding airspace and no-fly zone regulations before conducting drone operations.
+
