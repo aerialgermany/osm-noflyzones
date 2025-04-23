@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <title>Generate No-Fly-Zone from OSM</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div id="container">
+    <div id="map"></div>
+    <div id="sidebar">
+      <h3>Categories</h3>
+      <label><input type="checkbox" value="aeroway" checked>
+        <span class="color-box" style="background:#2b83ba;"></span> Airports
+      </label><br>
+      <label><input type="checkbox" value="landuse" checked>
+        <span class="color-box" style="background:#d7191c;"></span> Military
+      </label><br>
+      <label><input type="checkbox" value="amenity" checked>
+        <span class="color-box" style="background:#fdae61;"></span> Prisons
+      </label><br>
+      <label><input type="checkbox" value="boundary" checked>
+        <span class="color-box" style="background:#33aa33;"></span> Protected areas
+      </label><br>
+      <button id="downloadBtn">Download as GeoJSON</button>
+      <button id="updateBtn">Update map view</button>
+    </div>
+  </div>
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+  <script src="main.js"></script>
+</body>
+</html>
