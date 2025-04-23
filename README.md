@@ -10,7 +10,7 @@ This project allows you to visualize and filter **drone no-fly zones** based on 
 - Real-time filtering by category
 - **Dynamic GeoJSON generation** based on map bounds
 - Download filtered zones as GeoJSON
-- Compatible with tools like [FlightPlanEditor.de](https://www.flightplaneditor.de) from [Aerial Germany](https://wwww.aerial-germany.de)
+- Compatible with tools like [FlightPlanEditor.de](https://www.flightplaneditor.de) from [Aerial Germany](https://aerial-germany.de)
 
 ---
 
@@ -59,7 +59,7 @@ You should see the interactive map interface with filter options.
 
 ## 📤 Export & Integration
 
-You can export the currently visible no-fly zones as a **filtered GeoJSON file** and upload it into [FlightPlanEditor.de](https://www.flightplaneditor.de) from [Aerial Germany](https://wwww.aerial-germany.de) to use it in drone flight planning scenarios.
+You can export the currently visible no-fly zones as a **filtered GeoJSON file** and upload it into [FlightPlanEditor.de](https://www.flightplaneditor.de) from [Aerial Germany](https://aerial-germany.de) to use it in drone flight planning scenarios.
 
 ---
 
