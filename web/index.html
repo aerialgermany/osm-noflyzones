@@ -10,6 +10,11 @@
   <div id="container">
     <div id="map"></div>
     <div id="sidebar">
+      <div class="location-search">
+        <label for="locationSearch">Search location:</label>
+        <input type="text" id="locationSearch" placeholder="Enter a city or address">
+        <button id="goToLocation">Go to location</button>
+      </div>
       <h3>Categories</h3>
       <label><input type="checkbox" value="aeroway" checked>
         <span class="color-box" style="background:#2b83ba;"></span> Airports
@@ -21,13 +26,31 @@
         <span class="color-box" style="background:#fdae61;"></span> Prisons
       </label><br>
       <label><input type="checkbox" value="boundary" checked>
-        <span class="color-box" style="background:#33aa33;"></span> Protected areas
+        <span class="color-box" style="background:#33aa33;"></span> Protected Areas
       </label><br>
-      <button id="downloadBtn">Download as GeoJSON</button>
-      <button id="updateBtn">Update map view</button>
+      <label><input type="checkbox" value="highway" checked>
+        <span class="color-box" style="background:#ff9900;"></span> Highways
+      </label><br>
+      <label><input type="checkbox" value="railway" checked>
+        <span class="color-box" style="background:#8e44ad;"></span> Railways
+      </label><br>
+      <label><input type="checkbox" value="waterway" checked>
+        <span class="color-box" style="background:#3498db;"></span> Waterways
+      </label><br>
+      <label for="bufferWidth" style="margin-top:10px; display:block;">
+        Buffer width (in meters):
+      </label>
+      <input type="number" id="bufferWidth" min="0" max="1000" value="100" step="10" style="width:100%;">
+      <button id="updateBtn">Update View</button>
+      <div class="download-buttons">
+        <button id="downloadBtn">GeoJSON</button>
+        <button id="downloadKmlBtn">KML</button>
+      </div>
     </div>
   </div>
   <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@turf/turf@6/turf.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/tokml@0.4.0/tokml.min.js"></script>
   <script src="main.js"></script>
 </body>
 </html>
