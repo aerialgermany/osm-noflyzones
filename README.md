@@ -6,10 +6,10 @@ This project allows you to visualize and filter **drone no-fly zones** based on 
 
 ## ✨ Features
 
-- Interactive map with **no-fly zones** (airports, military areas, prisons, nature reserves)
+- Interactive map with **no-fly zones** (airports, military areas, prisons, nature reserves, streets, railways)
 - Real-time filtering by category
-- **Dynamic GeoJSON generation** based on map bounds
-- Download filtered zones as GeoJSON
+- **Dynamic GeoJSON or KML generation** based on map bounds
+- Download filtered zones as GeoJSON or KML
 - Compatible with tools like [FlightPlanEditor.de](https://www.flightplaneditor.de) from [Aerial Germany](https://aerial-germany.de)
 
 ---
@@ -59,7 +59,7 @@ You should see the interactive map interface with filter options.
 
 ## 📤 Export & Integration
 
-You can export the currently visible no-fly zones as a **filtered GeoJSON file** and upload it into [FlightPlanEditor.de](https://www.flightplaneditor.de) from [Aerial Germany](https://aerial-germany.de) to use it in drone flight planning scenarios.
+You can export the currently visible no-fly zones as a **filtered GeoJSON or KML file** and upload it into [FlightPlanEditor.de](https://www.flightplaneditor.de) from [Aerial Germany](https://aerial-germany.de) to use it in drone flight planning scenarios.
 
 ---
 
