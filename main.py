@@ -56,6 +56,8 @@ def generate_geojson(min_lat: float, min_lon: float, max_lat: float, max_lon: fl
       way["waterway"~"river|canal"]({bbox});
       way["highway"~"motorway|trunk|primary"]({bbox});
       way["railway"~"rail|subway|light_rail"]({bbox});
+      
+      way["power"="line"]({bbox});
     );
     (._;>;);
     out body;
