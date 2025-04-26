@@ -170,24 +170,35 @@ document.getElementById('updateBtn').addEventListener('click', () => {
     });
 });
 
-document.getElementById("goToLocation").addEventListener("click", () => {
-  const query = document.getElementById("locationSearch").value;
-  if (!query) return;
+document.addEventListener("DOMContentLoaded", () => {
+  const locationInput = document.getElementById("locationSearch");
 
-  const url = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(query)}`;
+  if (locationInput) {
+    locationInput.addEventListener("keypress", (e) => {
+      if (e.key === "Enter") {
+        e.preventDefault();
+        const query = e.target.value;
+        if (!query) return;
 
-  fetch(url)
-    .then(res => res.json())
-    .then(data => {
-      if (!data.length) {
-        alert("Location not found.");
-        return;
+        const url = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(query)}`;
+
+        fetch(url)
+          .then(res => res.json())
+          .then(data => {
+            if (!data.length) {
+              alert("Location not found.");
+              return;
+            }
+            const { lat, lon } = data[0];
+            map.setView([parseFloat(lat), parseFloat(lon)], 13);
+          })
+          .catch(err => {
+            console.error("Geocoding error:", err);
+            alert("Could not locate the place.");
+          });
       }
-      const { lat, lon } = data[0];
-      map.setView([parseFloat(lat), parseFloat(lon)], 13);
-    })
-    .catch(err => {
-      console.error("Geocoding error:", err);
-      alert("Could not locate the place.");
     });
+  } else {
+    console.error("locationSearch input field not found.");
+  }
 });
