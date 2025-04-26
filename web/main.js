@@ -17,8 +17,17 @@ const layerColors = {
   boundary: "#33aa33",
   highway: "#ff9900",
   railway: "#8e44ad",
-  waterway: "#3498db"
+  waterway: "#3498db",
+  power: "#e75480"
 };
+
+function showLoading() {
+  document.getElementById('loadingOverlay').style.display = 'flex';
+}
+
+function hideLoading() {
+  document.getElementById('loadingOverlay').style.display = 'none';
+}
 
 const checkboxes = document.querySelectorAll('#sidebar input[type="checkbox"]');
 
@@ -33,7 +42,8 @@ function filterData(selected, bounds = null) {
         (cat === "boundary" && p.boundary === 'protected_area') ||
         (cat === "highway" && ["motorway", "trunk", "primary"].includes(p.highway)) ||
         (cat === "railway" && ["rail", "subway", "light_rail"].includes(p.railway)) ||
-        (cat === "waterway" && ["river", "canal"].includes(p.waterway))
+        (cat === "waterway" && ["river", "canal"].includes(p.waterway)) ||
+        (cat === "power" && p.power === 'line')
       );
       if (!match) return false;
       if (bounds) {
@@ -47,7 +57,8 @@ function filterData(selected, bounds = null) {
       const needsBuffer =
         (["motorway", "trunk", "primary"].includes(p.highway) ||
          ["rail", "subway", "light_rail"].includes(p.railway) ||
-         ["river", "canal"].includes(p.waterway));
+         ["river", "canal"].includes(p.waterway) ||
+         (p.power === "line"));
 
       if (needsBuffer && f.geometry.type === "LineString") {
         try {
@@ -83,6 +94,7 @@ function renderGeoJSON(filtered) {
       if (["motorway", "trunk", "primary"].includes(p.highway)) return { color: layerColors.highway, weight: 1, fillOpacity: 0.3 };
       if (["rail", "subway", "light_rail"].includes(p.railway)) return { color: layerColors.railway, weight: 1, fillOpacity: 0.3 };
       if (["river", "canal"].includes(p.waterway)) return { color: layerColors.waterway, weight: 1, fillOpacity: 0.3 };
+      if (p.power === "line") return { color: layerColors.power, weight: 1, fillOpacity: 0.3 };
       return { color: "orange", weight: 1, fillOpacity: 0.2 };
     },
     onEachFeature: (feature, layer) => {
@@ -155,6 +167,8 @@ document.getElementById('updateBtn').addEventListener('click', () => {
   }
 
   const url = `/generate-geojson?min_lat=${latLng1.lat}&min_lon=${minLon}&max_lat=${latLng2.lat}&max_lon=${maxLon}`;
+  showLoading();
+
   fetch(url)
     .then(res => {
       if (!res.ok) throw new Error("Request rejected by server.");
@@ -163,10 +177,12 @@ document.getElementById('updateBtn').addEventListener('click', () => {
     .then(data => {
       fullData = data;
       updateMap();
+      hideLoading();
     })
     .catch(err => {
       console.error("Error loading data:", err);
       alert("Error loading GeoJSON.");
+      hideLoading();
     });
 });
 

@@ -1,89 +1,75 @@
 # OSM No-Fly Zone Visualizer
 
-This project allows you to visualize and filter **drone no-fly zones** based on OpenStreetMap data, and export selected areas as GeoJSON files. It includes an interactive Leaflet map, a category-based filter interface, and a FastAPI backend for live GeoJSON generation based on the visible map area.
+This project allows you to visualize and filter **drone no-fly zones** based on OpenStreetMap data, and export selected areas as GeoJSON or KML files.  
+It includes an interactive Leaflet map, category-based filtering, adjustable buffer width, live data loading via FastAPI, and export functionality.
 
 ---
 
 ## ✨ Features
 
-- Interactive map with **no-fly zones** (airports, military areas, prisons, nature reserves, streets, railways)
-- Real-time filtering by category
-- **Dynamic GeoJSON or KML generation** based on map bounds
-- Download filtered zones as GeoJSON or KML
-- Compatible with tools like [FlightPlanEditor.de](https://www.flightplaneditor.de) from [Aerial Germany](https://aerial-germany.de)
+- Interactive map with **no-fly zones**:
+  - Airports
+  - Military areas
+  - Prisons
+  - Protected nature reserves
+  - Roads (motorways, primary roads)
+  - Railways
+  - Waterways (rivers, canals)
+  - **Powerlines (NEW!)**
+- **Adjustable buffer width** (default 100 meters) for linear features (roads, railways, waterways, powerlines)
+- **Search location** by typing a city/address and pressing **Enter**
+- **Loading overlay** while fetching and processing new data
+- **Dynamic GeoJSON or KML download** for currently visible map features
+- Works perfectly with tools like [FlightPlanEditor.de](https://www.flightplaneditor.de)
 
 ---
 
 ## 🚀 Setup Instructions
 
-### 1. Clone the repository
-
-```bash
-git clone https://github.com/aerialgermany/osm-noflyzones.git
-cd osm-noflyzones
-```
-
-### 2. Create a virtual environment (Python 3.9+ recommended)
-
-```bash
-python -m venv venv
-source venv/bin/activate        # on Linux/macOS
-venv\Scripts\activate.bat       # on Windows
-```
-
-### 3. Install the dependencies
-
-```bash
-pip install -r requirements.txt
-```
-
-> Requirements include:
-> - `fastapi`
-> - `uvicorn`
-> - `overpy`
-> - `geojson`
-> - `python-multipart`
-
-### 4. Start the FastAPI server
-
-```bash
-uvicorn main:app --reload
-```
-
-### 5. Open in your browser
-
-Visit [http://localhost:8000](http://localhost:8000)  
-You should see the interactive map interface with filter options.
+1. Clone or download this repository.
+2. Create and activate a virtual environment:
+   ```bash
+   python -m venv venv
+   source venv/bin/activate   # Linux/macOS
+   .\venv\Scripts\activate # Windows
+   ```
+3. Install the requirements:
+   ```bash
+   pip install -r requirements.txt
+   ```
+4. Start the FastAPI server:
+   ```bash
+   uvicorn main:app --reload
+   ```
+5. Open the app in your browser:
+   ```
+   http://localhost:8000
+   ```
 
 ---
 
 ## 📤 Export & Integration
 
-You can export the currently visible no-fly zones as a **filtered GeoJSON or KML file** and upload it into [FlightPlanEditor.de](https://www.flightplaneditor.de) from [Aerial Germany](https://aerial-germany.de) to use it in drone flight planning scenarios.
+- Download **GeoJSON** or **KML** files based on your current map selection.
+- Buffer zones are automatically created for roads, railways, waterways, and powerlines.
+- You can upload the exported files into [FlightPlanEditor.de](https://www.flightplaneditor.de) to plan and manage your drone missions.
+
+---
+
+## 🖼 Interface Preview
+
+![Screenshot](doc/screenshot.png)
 
 ---
 
 ## 📄 License
 
-This project is licensed under the **Apache License 2.0** – see [LICENSE](LICENSE) for details.
-
----
-
-## 💡 Credits
-
-Built with ❤️ using:
-- [OpenStreetMap](https://www.openstreetmap.org)
-- [Leaflet.js](https://leafletjs.com/)
-- [FastAPI](https://fastapi.tiangolo.com)
-
+Licensed under the [Apache License 2.0](LICENSE).
 
 ---
 
 ## ⚠️ Disclaimer
 
-The data visualized and exported through this tool is based on OpenStreetMap and publicly available sources.  
-**It does not constitute legally binding or official no-fly zone information.**  
-No liability is assumed for the accuracy, completeness, or legal applicability of the displayed data.
-
-📌 **Always consult your local aviation authority or competent government agencies** for current and legally binding airspace and no-fly zone regulations before conducting drone operations.
-
+This tool provides **unofficial, non-binding information**.  
+Always consult your **local aviation authority** for official and legally binding no-fly zone data.  
+**No liability** is assumed for the correctness or completeness of the displayed data.

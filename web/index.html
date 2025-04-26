@@ -8,6 +8,20 @@
   <link rel="icon" href="favicon.ico" type="image/x-icon">
 </head>
 <body>
+  <div id="loadingOverlay" style="
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(255, 255, 255, 0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.5em;
+    color: #333;
+    z-index: 999;
+    display: none;
+  ">
+    Loading map data... ⏳
+  </div>
   <div id="container">
     <div id="map"></div>
     <div id="sidebar">
@@ -36,6 +50,9 @@
       </label><br>
       <label><input type="checkbox" value="waterway" checked>
         <span class="color-box" style="background:#3498db;"></span> Waterways
+      </label><br>
+      <label><input type="checkbox" value="power" checked>
+        <span class="color-box" style="background:#e75480;"></span> Powerlines
       </label><br>
       <label for="bufferWidth" style="margin-top:10px; display:block;">
         Buffer width (in meters):
