@@ -15,7 +15,8 @@ It includes an interactive Leaflet map, category-based filtering, adjustable buf
   - Roads (motorways, primary roads)
   - Railways
   - Waterways (rivers, canals)
-  - **Powerlines (NEW!)**
+  - Powerlines
+  - **Wind turbines (NEW!)**
 - **Adjustable buffer width** (default 100 meters) for linear features (roads, railways, waterways, powerlines)
 - **Search location** by typing a city/address and pressing **Enter**
 - **Loading overlay** while fetching and processing new data
@@ -51,7 +52,7 @@ It includes an interactive Leaflet map, category-based filtering, adjustable buf
 ## 📤 Export & Integration
 
 - Download **GeoJSON** or **KML** files based on your current map selection.
-- Buffer zones are automatically created for roads, railways, waterways, and powerlines.
+- Buffer zones are automatically created for roads, railways, waterways, powerlines, and wind turbines (50 m fixed).
 - You can upload the exported files into [FlightPlanEditor.de](https://www.flightplaneditor.de) to plan and manage your drone missions.
 
 ---

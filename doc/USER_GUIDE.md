@@ -12,6 +12,7 @@ This interactive web application helps you visualize and export potential drone 
    - Military zones
    - Prisons
    - Protected areas
+   - Wind Turbines
    - Roads (Highways)
    - Railways
    - Waterways
@@ -26,6 +27,14 @@ This interactive web application helps you visualize and export potential drone 
    - Powerlines
 
    The default buffer width is **100 meters**, but you can customize it.
+
+## 🌬️ Wind Turbines
+
+- When you select **"Windturbines"** in the sidebar, all wind turbines from OpenStreetMap will be displayed.
+- Each wind turbine is shown as a marker and automatically surrounded by a **50 m no-fly zone buffer circle**.
+- These circles are visible on the map and included in both **GeoJSON** and **KML** exports.
+- The buffer around wind turbines is fixed at 50 meters and does not depend on the adjustable buffer width setting.
+
 
 ---
 
