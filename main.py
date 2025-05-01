@@ -58,6 +58,10 @@ def generate_geojson(min_lat: float, min_lon: float, max_lat: float, max_lon: fl
       way["railway"~"rail|subway|light_rail"]({bbox});
       
       way["power"="line"]({bbox});
+
+      node["power"="generator"]["generator:source"="wind"]({bbox});
+      way["power"="generator"]["generator:source"="wind"]({bbox});
+      relation["power"="generator"]["generator:source"="wind"]({bbox});
     );
     (._;>;);
     out body;
