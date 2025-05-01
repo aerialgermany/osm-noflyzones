@@ -1,4 +1,3 @@
-
 const map = L.map('map').setView([50.1, 8.2], 11);
 
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -18,7 +17,9 @@ const layerColors = {
   highway: "#ff9900",
   railway: "#8e44ad",
   waterway: "#3498db",
-  power: "#e75480"
+  power: "#e75480",
+  windturbine: "#90ee90",
+  windturbine_buffer: "#006400"
 };
 
 function showLoading() {
@@ -43,7 +44,8 @@ function filterData(selected, bounds = null) {
         (cat === "highway" && ["motorway", "trunk", "primary"].includes(p.highway)) ||
         (cat === "railway" && ["rail", "subway", "light_rail"].includes(p.railway)) ||
         (cat === "waterway" && ["river", "canal"].includes(p.waterway)) ||
-        (cat === "power" && p.power === 'line')
+        (cat === "power" && p.power === 'line') ||
+        (cat === "windturbine" && p.power === 'generator' && p["generator:source"] === 'wind')
       );
       if (!match) return false;
       if (bounds) {
@@ -54,29 +56,32 @@ function filterData(selected, bounds = null) {
     })
     .map(f => {
       const p = f.properties;
+      const isWindTurbine = (p.power === "generator" && p["generator:source"] === "wind");
       const needsBuffer =
         (["motorway", "trunk", "primary"].includes(p.highway) ||
          ["rail", "subway", "light_rail"].includes(p.railway) ||
          ["river", "canal"].includes(p.waterway) ||
-         (p.power === "line"));
+         (p.power === "line") ||
+         isWindTurbine);
 
-      if (needsBuffer && f.geometry.type === "LineString") {
+      const bufferMeters = isWindTurbine ? 50 : parseFloat(document.getElementById('bufferWidth').value) || 0;
+
+      const results = [f];
+
+      if (needsBuffer) {
         try {
-            const bufferMeters = parseFloat(document.getElementById('bufferWidth').value) || 0;
-            const bufferKm = bufferMeters / 1000;
-            const buffered = turf.buffer(f, bufferKm, { units: 'kilometers' });
-          return {
-            type: "Feature",
-            geometry: buffered.geometry,
-            properties: f.properties
-          };
+          const bufferKm = bufferMeters / 1000;
+          const buffered = turf.buffer(f, bufferKm, { units: 'kilometers' });
+          buffered.properties = { ...f.properties, buffered: true }; // zum Styling unterscheidbar
+          results.push(buffered);
         } catch (e) {
           console.warn("Buffer failed:", e);
         }
       }
 
-      return f;
-    });
+      return results;
+    })
+    .flat();
 
   return { type: "FeatureCollection", features };
 }
@@ -87,6 +92,9 @@ function renderGeoJSON(filtered) {
   currentLayer = L.geoJSON(filtered, {
     style: feature => {
       const p = feature.properties;
+      if (p.buffered && p.power === "generator" && p["generator:source"] === "wind") {
+        return { color: layerColors.windturbine_buffer, weight: 1, fillOpacity: 0.3 };
+      }
       if (p.aeroway === "aerodrome") return { color: layerColors.aeroway, weight: 2, fillOpacity: 0.4 };
       if (p.landuse === "military") return { color: layerColors.landuse, weight: 2, fillOpacity: 0.4 };
       if (p.amenity === "prison") return { color: layerColors.amenity, weight: 2, fillOpacity: 0.4 };
@@ -95,10 +103,27 @@ function renderGeoJSON(filtered) {
       if (["rail", "subway", "light_rail"].includes(p.railway)) return { color: layerColors.railway, weight: 1, fillOpacity: 0.3 };
       if (["river", "canal"].includes(p.waterway)) return { color: layerColors.waterway, weight: 1, fillOpacity: 0.3 };
       if (p.power === "line") return { color: layerColors.power, weight: 1, fillOpacity: 0.3 };
+      if (p.power === "generator" && p["generator:source"] === "wind")
+        return { color: layerColors.windturbine, radius: 5, weight: 1, fillOpacity: 0.9 };
       return { color: "orange", weight: 1, fillOpacity: 0.2 };
     },
+    pointToLayer: (feature, latlng) => {
+      const p = feature.properties;
+      if (p.power === "generator" && p["generator:source"] === "wind") {
+        return L.circleMarker(latlng, {
+          radius: 5,
+          fillColor: layerColors.windturbine,
+          color: "#333",
+          weight: 1,
+          opacity: 1,
+          fillOpacity: 0.8
+        });
+      }
+      return L.marker(latlng);
+    },
     onEachFeature: (feature, layer) => {
-      const tags = Object.entries(feature.properties).map(([k, v]) => `<b>${k}</b>: ${v}`).join("<br>");
+      const tags = Object.entries(feature.properties)
+        .map(([k, v]) => `<b>${k}</b>: ${v}`).join("<br>");
       layer.bindPopup(tags || "No metadata");
     }
   }).addTo(map);
