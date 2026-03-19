@@ -30,37 +30,63 @@
         <input type="text" id="locationSearch" placeholder="Enter a city or address">
       </div>
       <h3>Categories</h3>
-      <label><input type="checkbox" value="aeroway" checked>
+      <label><input class="category-checkbox" type="checkbox" value="aeroway" checked>
         <span class="color-box" style="background:#2b83ba;"></span> Airports
       </label><br>
-      <label><input type="checkbox" value="landuse" checked>
+      <label><input class="category-checkbox" type="checkbox" value="landuse" checked>
         <span class="color-box" style="background:#d7191c;"></span> Military
       </label><br>
-      <label><input type="checkbox" value="amenity" checked>
+      <label><input class="category-checkbox" type="checkbox" value="amenity" checked>
         <span class="color-box" style="background:#fdae61;"></span> Prisons
       </label><br>
-      <label><input type="checkbox" value="boundary" checked>
+      <label><input class="category-checkbox" type="checkbox" value="boundary" checked>
         <span class="color-box" style="background:#33aa33;"></span> Protected Areas
       </label><br>
-      <label><input type="checkbox" value="windturbine" checked>
+      <label><input class="category-checkbox" type="checkbox" value="windturbine" checked>
         <span class="color-box" style="background:#90ee90;"></span> Wind Turbines
       </label><br>
-      <label><input type="checkbox" value="highway" checked>
+      <label><input class="category-checkbox" type="checkbox" value="highway" checked>
         <span class="color-box" style="background:#ff9900;"></span> Highways
       </label><br>
-      <label><input type="checkbox" value="railway" checked>
+      <label><input class="category-checkbox" type="checkbox" value="railway" checked>
         <span class="color-box" style="background:#8e44ad;"></span> Railways
       </label><br>
-      <label><input type="checkbox" value="waterway" checked>
+      <label><input class="category-checkbox" type="checkbox" value="waterway" checked>
         <span class="color-box" style="background:#3498db;"></span> Waterways
       </label><br>
-      <label><input type="checkbox" value="power" checked>
+      <label><input class="category-checkbox" type="checkbox" value="power" checked>
         <span class="color-box" style="background:#e75480;"></span> Powerlines
       </label><br>
       <label for="bufferWidth" style="margin-top:10px; display:block;">
         Buffer width (in meters):
       </label>
       <input type="number" id="bufferWidth" min="0" max="1000" value="100" step="10" style="width:100%;">
+      <h3>Zensus</h3>
+      <label><input class="category-checkbox" type="checkbox" value="zensus_density" checked>
+        <span class="color-box" style="background:#cc4444;"></span> Zensus Density Grid
+      </label><br>
+      <label for="zensusDensityClass" style="margin-top:10px; display:block;">
+        Density class:
+      </label>
+      <select id="zensusDensityClass">
+        <option value="very_low">Very low (&lt; 100)</option>
+        <option value="low" selected>Low (100 - 400)</option>
+        <option value="medium">Medium (400 - 1000)</option>
+        <option value="high">High (&ge; 1000)</option>
+        <option value="custom">Custom</option>
+      </select>
+      <label for="zensusGrid" style="margin-top:10px; display:block;">
+        Grid:
+      </label>
+      <select id="zensusGrid">
+        <option value="100m" selected>100m</option>
+        <option value="1km">1km</option>
+        <option value="10km">10km</option>
+      </select>
+      <label for="zensusMinDensity" style="margin-top:10px; display:block;">
+        Custom min density (people/km²):
+      </label>
+      <input type="number" id="zensusMinDensity" min="0" value="0" step="10" disabled>
       <button id="updateBtn">Update View</button>
       <div class="download-buttons">
         <button id="downloadBtn">GeoJSON</button>
