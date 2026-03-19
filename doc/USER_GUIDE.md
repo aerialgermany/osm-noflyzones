@@ -1,6 +1,6 @@
 # No-Fly Zone Web App – Quick User Guide
 
-This interactive web application helps you visualize and export potential drone no-fly zones using OpenStreetMap data.
+This interactive web application helps you visualize and export potential drone no-fly zones using OpenStreetMap data and Zensus density grid data.
 
 ---
 
@@ -17,6 +17,7 @@ This interactive web application helps you visualize and export potential drone 
    - Railways
    - Waterways
    - Powerlines
+   - Zensus Density Grid
 
 3. Use the **Search Location** field to jump to any place by typing a city or address and pressing **Enter**.
 
@@ -27,6 +28,17 @@ This interactive web application helps you visualize and export potential drone 
    - Powerlines
 
    The default buffer width is **100 meters**, but you can customize it.
+
+5. For Zensus data, use the dedicated controls:
+   - **Density class**:
+     - Very low (`< 100`)
+     - Low (`100 - 400`)
+     - Medium (`400 - 1000`)
+     - High (`>= 1000`)
+     - Custom
+   - **Grid**: choose between `100m`, `1km`, and `10km`.
+   - **Custom min density** is only active when **Custom** class is selected.
+   - Click **Update View** after changing grid or filters to fetch data for the current map extent.
 
 ## 🌬️ Wind Turbines
 
@@ -41,7 +53,10 @@ This interactive web application helps you visualize and export potential drone 
 ## 💾 Export Data
 
 - Use the **GeoJSON** or **KML** buttons to download the currently visible and selected zones.
-- Exported data exactly matches what is shown on the map (including buffered polygons for linear features).
+- Export includes buffered polygons for selected linear features (roads, railways, waterways, powerlines, and wind turbines).
+- Zensus export is optimized as polygon areas:
+  - only polygonal Zensus features are exported
+  - adjacent Zensus grid cells are merged where possible to reduce file size
 
 ---
 
@@ -62,5 +77,6 @@ This interactive web application helps you visualize and export potential drone 
 
 - Buffering is only applied to linear features (roads, railways, waterways, powerlines).
 - Map updates are limited to areas smaller than **200 km** in width.
+- Zensus is enabled by default in the sidebar.
 - Always verify drone restrictions with **official local aviation authorities**.
 - This tool provides **unofficial information** and no liability is assumed.

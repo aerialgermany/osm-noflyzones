@@ -1,7 +1,7 @@
 # OSM No-Fly Zone Visualizer
 
-This project allows you to visualize and filter **drone no-fly zones** based on OpenStreetMap data, and export selected areas as GeoJSON or KML files.  
-It includes an interactive Leaflet map, category-based filtering, adjustable buffer width, live data loading via FastAPI, and export functionality.
+This project allows you to visualize and filter **drone no-fly zones** based on OpenStreetMap data and Zensus density grid data, and export selected areas as GeoJSON or KML files.  
+It includes an interactive Leaflet map, category-based filtering, adjustable buffer width, Zensus density classes, live data loading via FastAPI, and export functionality.
 
 ---
 
@@ -16,8 +16,12 @@ It includes an interactive Leaflet map, category-based filtering, adjustable buf
   - Railways
   - Waterways (rivers, canals)
   - Powerlines
+  - **Zensus density grid (NEW!)**
   - **Wind turbines (NEW!)**
 - **Adjustable buffer width** (default 100 meters) for linear features (roads, railways, waterways, powerlines)
+- **Zensus controls**:
+  - Density class presets (`Very low`, `Low`, `Medium`, `High`) or `Custom`
+  - Grid resolution selector (`100m`, `1km`, `10km`)
 - **Search location** by typing a city/address and pressing **Enter**
 - **Loading overlay** while fetching and processing new data
 - **Dynamic GeoJSON or KML download** for currently visible map features
@@ -53,6 +57,7 @@ It includes an interactive Leaflet map, category-based filtering, adjustable buf
 
 - Download **GeoJSON** or **KML** files based on your current map selection.
 - Buffer zones are automatically created for roads, railways, waterways, powerlines, and wind turbines (50 m fixed).
+- Zensus exports are polygon-only and adjacent Zensus cells are merged where possible to reduce file size.
 - You can upload the exported files into [FlightPlanEditor.de](https://www.flightplaneditor.de) to plan and manage your drone missions.
 
 ---
