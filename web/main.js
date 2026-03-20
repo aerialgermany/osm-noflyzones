@@ -34,21 +34,20 @@ const checkboxes = document.querySelectorAll('.category-checkbox');
 const zensusDensityClassSelect = document.getElementById('zensusDensityClass');
 const zensusMinDensityInput = document.getElementById('zensusMinDensity');
 
-const zensusClassRanges = {
-  very_low: { min: 0, max: 100 },
-  low: { min: 100, max: 400 },
-  medium: { min: 400, max: 1000 },
-  high: { min: 1000, max: null }
+const zensusClassThresholds = {
+  very_low: 100,
+  low: 400,
+  medium: 1000,
+  high: 2000
 };
 
-function getSelectedZensusRange() {
+function getSelectedZensusThreshold() {
   const selectedClass = zensusDensityClassSelect ? zensusDensityClassSelect.value : "custom";
   if (selectedClass === "custom") {
     const customMin = parseFloat(zensusMinDensityInput?.value || "0");
-    return { min: Number.isFinite(customMin) ? Math.max(customMin, 0) : 0, max: null, isCustom: true };
+    return Number.isFinite(customMin) ? Math.max(customMin, 0) : 0;
   }
-  const range = zensusClassRanges[selectedClass] || zensusClassRanges.low;
-  return { min: range.min, max: range.max, isCustom: false };
+  return zensusClassThresholds[selectedClass] ?? zensusClassThresholds.low;
 }
 
 function syncZensusControls() {
@@ -101,10 +100,9 @@ function filterData(selected, bounds = null) {
       const category = getFeatureCategory(p);
       if (category === "zensus_density") {
         const density = p.metrics ? p.metrics.density_km2 : null;
-        const range = getSelectedZensusRange();
+        const threshold = getSelectedZensusThreshold();
         if (density === null || density === undefined) return false;
-        if (density < range.min) return false;
-        if (range.max !== null && density >= range.max) return false;
+        if (density < threshold) return false;
       }
       const match = selected.includes(category);
       if (!match) return false;
@@ -241,8 +239,9 @@ function buildRequestUrl(bounds) {
   const selected = Array.from(checkboxes).filter(cb => cb.checked).map(cb => cb.value);
   const includeZensus = selected.includes("zensus_density");
   const grid = document.getElementById("zensusGrid").value;
-  const zensusRange = getSelectedZensusRange();
-  const minDensity = zensusRange.min;
+  // Always load full zensus data for current extent.
+  // Thresholding is applied client-side so lower thresholds only add areas.
+  const minDensity = 0;
 
   const sw = bounds.getSouthWest();
   const ne = bounds.getNorthEast();

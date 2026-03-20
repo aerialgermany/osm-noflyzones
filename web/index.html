@@ -66,13 +66,13 @@
         <span class="color-box" style="background:#cc4444;"></span> Zensus Density Grid
       </label><br>
       <label for="zensusDensityClass" style="margin-top:10px; display:block;">
-        Density class:
+        Critical from density:
       </label>
       <select id="zensusDensityClass">
-        <option value="very_low">Very low (&lt; 100)</option>
-        <option value="low" selected>Low (100 - 400)</option>
-        <option value="medium">Medium (400 - 1000)</option>
-        <option value="high">High (&ge; 1000)</option>
+        <option value="very_low">&ge; 100</option>
+        <option value="low" selected>&ge; 400</option>
+        <option value="medium">&ge; 1000</option>
+        <option value="high">&ge; 2000</option>
         <option value="custom">Custom</option>
       </select>
       <label for="zensusGrid" style="margin-top:10px; display:block;">
@@ -84,7 +84,7 @@
         <option value="10km">10km</option>
       </select>
       <label for="zensusMinDensity" style="margin-top:10px; display:block;">
-        Custom min density (people/km²):
+        Custom critical threshold (people/km²):
       </label>
       <input type="number" id="zensusMinDensity" min="0" value="0" step="10" disabled>
       <button id="updateBtn">Update View</button>
@@ -97,6 +97,6 @@
   <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@turf/turf@6/turf.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/tokml@0.4.0/tokml.min.js"></script>
-  <script src="main.js"></script>
+  <script src="main.js?v=20260318-2"></script>
 </body>
 </html>

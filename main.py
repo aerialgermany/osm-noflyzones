@@ -229,6 +229,7 @@ def fetch_zensus_features(
                 "outSR": "4326",
                 "resultOffset": str(offset),
                 "resultRecordCount": "2000",
+                "orderByFields": "OBJECTID ASC",
                 "f": "geojson",
             },
         )
