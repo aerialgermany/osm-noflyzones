@@ -1,4 +1,8 @@
-const map = L.map('map').setView([50.1, 8.2], 11);
+const map = L.map('map', {
+  zoomSnap: 0.5,
+  zoomDelta: 0.5,
+  wheelPxPerZoomLevel: 90
+}).setView([50.1, 8.2], 11);
 
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
   attribution: '&copy; OpenStreetMap contributors'
@@ -125,7 +129,9 @@ function filterData(selected, bounds = null) {
       if (shouldBuffer && bufferMeters > 0) {
         try {
           const bufferKm = bufferMeters / 1000;
-          const buffered = turf.buffer(f, bufferKm, { units: 'kilometers' });
+          const buffered = isWindTurbine
+            ? turf.circle(f, bufferKm, { units: 'kilometers', steps: 8 })
+            : turf.buffer(f, bufferKm, { units: 'kilometers' });
           buffered.properties = { ...f.properties, buffered: true };
           results.push(buffered);
         } catch (e) {
