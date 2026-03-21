@@ -34,6 +34,21 @@ function hideLoading() {
   document.getElementById('loadingOverlay').style.display = 'none';
 }
 
+function setLoadingMessage(message) {
+  const loadingText = document.getElementById('loadingText');
+  if (loadingText) {
+    loadingText.textContent = message;
+  }
+}
+
+function nextPaint() {
+  return new Promise(resolve => requestAnimationFrame(() => resolve()));
+}
+
+function sleep(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+
 const checkboxes = document.querySelectorAll('.category-checkbox');
 const zensusDensityClassSelect = document.getElementById('zensusDensityClass');
 const zensusMinDensityInput = document.getElementById('zensusMinDensity');
@@ -313,43 +328,85 @@ function mergeZensusExportFeatures(features) {
 
 function buildExportData(selected, bounds) {
   const filtered = filterData(selected, bounds);
+  const simplifiedFeatures = (filtered.features || []).map(f => {
+    if (!f?.geometry || !f?.properties?.buffered) return f;
+    try {
+      return turf.simplify(f, { tolerance: 0.00005, highQuality: false, mutate: false });
+    } catch (err) {
+      console.warn("Simplify failed, using original geometry.", err);
+      return f;
+    }
+  });
   return {
     type: "FeatureCollection",
-    features: mergeZensusExportFeatures(filtered.features || [])
+    features: mergeZensusExportFeatures(simplifiedFeatures)
   };
 }
 
-document.getElementById('downloadBtn').addEventListener('click', () => {
-  const selected = Array.from(checkboxes).filter(cb => cb.checked).map(cb => cb.value);
-  const bounds = map.getBounds();
-  const exportData = buildExportData(selected, bounds);
-  const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(exportData));
-  const dlAnchor = document.createElement('a');
-  dlAnchor.setAttribute("href", dataStr);
-  dlAnchor.setAttribute("download", "no_fly_filtered.geojson");
-  document.body.appendChild(dlAnchor);
-  dlAnchor.click();
-  dlAnchor.remove();
+document.getElementById('downloadBtn').addEventListener('click', async () => {
+  showLoading();
+  let url = null;
+  try {
+    const selected = Array.from(checkboxes).filter(cb => cb.checked).map(cb => cb.value);
+    const bounds = map.getBounds();
+    setLoadingMessage("Preparing GeoJSON export... ⏳");
+    await nextPaint();
+    await sleep(50);
+    const exportData = buildExportData(selected, bounds);
+    setLoadingMessage("Creating download file... ⏳");
+    await nextPaint();
+    const blob = new Blob([JSON.stringify(exportData)], { type: 'application/geo+json;charset=utf-8' });
+    url = URL.createObjectURL(blob);
+    const dlAnchor = document.createElement('a');
+    dlAnchor.setAttribute("href", url);
+    dlAnchor.setAttribute("download", "no_fly_filtered.geojson");
+    document.body.appendChild(dlAnchor);
+    dlAnchor.click();
+    dlAnchor.remove();
+  } catch (err) {
+    console.error("GeoJSON export failed:", err);
+    alert("GeoJSON export failed.");
+  } finally {
+    if (url) URL.revokeObjectURL(url);
+    hideLoading();
+    setLoadingMessage("Loading map data... ⏳");
+  }
 });
 
-document.getElementById('downloadKmlBtn').addEventListener('click', () => {
-  const selected = Array.from(checkboxes).filter(cb => cb.checked).map(cb => cb.value);
-  const bounds = map.getBounds();
-  const exportData = buildExportData(selected, bounds);
+document.getElementById('downloadKmlBtn').addEventListener('click', async () => {
+  showLoading();
+  let url = null;
+  try {
+    const selected = Array.from(checkboxes).filter(cb => cb.checked).map(cb => cb.value);
+    const bounds = map.getBounds();
+    setLoadingMessage("Preparing KML export... ⏳");
+    await nextPaint();
+    await sleep(50);
+    const exportData = buildExportData(selected, bounds);
 
-  const kmlString = tokml(exportData, {
-    name: 'name',
-    description: 'description'
-  });
+    setLoadingMessage("Converting to KML... ⏳");
+    await nextPaint();
+    const kmlString = tokml(exportData, {
+      name: 'name',
+      description: 'description'
+    });
 
-  const blob = new Blob([kmlString], { type: 'application/vnd.google-earth.kml+xml' });
-  const url = URL.createObjectURL(blob);
-  const dlAnchor = document.createElement('a');
-  dlAnchor.setAttribute("href", url);
-  dlAnchor.setAttribute("download", "no_fly_filtered.kml");
-  document.body.appendChild(dlAnchor);
-  dlAnchor.click();
-  dlAnchor.remove();
+    const blob = new Blob([kmlString], { type: 'application/vnd.google-earth.kml+xml' });
+    url = URL.createObjectURL(blob);
+    const dlAnchor = document.createElement('a');
+    dlAnchor.setAttribute("href", url);
+    dlAnchor.setAttribute("download", "no_fly_filtered.kml");
+    document.body.appendChild(dlAnchor);
+    dlAnchor.click();
+    dlAnchor.remove();
+  } catch (err) {
+    console.error("KML export failed:", err);
+    alert("KML export failed.");
+  } finally {
+    if (url) URL.revokeObjectURL(url);
+    hideLoading();
+    setLoadingMessage("Loading map data... ⏳");
+  }
 });
 
 function normalizeLongitude(lon) {
